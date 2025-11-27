@@ -1,0 +1,4 @@
+ucapi>=0.3.1
+aiostreammagic>=2.8.0
+certifi
+aiohttp>=3.9.0

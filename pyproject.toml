@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=65.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uc-intg-cambridge-audio"
+dynamic = ["version"]
+description = "Cambridge Audio integration for Unfolded Circle Remote"
+authors = [
+    {name = "Meir Miyara", email = "meir.miyara@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MPL-2.0"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL-2.0)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Home Automation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "ucapi>=0.3.0",
+    "aiostreammagic>=2.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mase1981/uc-intg-cambridge-audio"
+Issues = "https://github.com/mase1981/uc-intg-cambridge-audio/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "uc_intg_cambridge_audio.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["uc_intg_cambridge_audio*"]
+exclude = ["tests*"]
+
+[project.scripts]
+uc-intg-cambridge-audio = "uc_intg_cambridge_audio.driver:main"
