@@ -1,0 +1,94 @@
+{
+  "driver_id": "cambridge_audio",
+  "version": "0.1.0",
+  "min_core_api": "0.22.0",
+  "name": {
+    "en": "Cambridge Audio"
+  },
+  "icon": "uc:music",
+  "description": {
+    "en": "Integration for Cambridge Audio streamers, receivers, and pre-amps"
+  },
+  "developer": {
+    "name": "Meir Miyara",
+    "email": "meir.miyara@gmail.com",
+    "url": "https://github.com/mase1981"
+  },
+  "home_page": "https://github.com/mase1981/uc-intg-cambridge-audio",
+  "support": "https://github.com/mase1981/uc-intg-cambridge-audio/issues",
+  "release_date": "2025-01-01",
+  "setup_data_schema": {
+    "title": {
+      "en": "Cambridge Audio Setup"
+    },
+    "settings": [
+      {
+        "id": "device_count",
+        "label": {
+          "en": "Number of Devices"
+        },
+        "description": {
+          "en": "How many Cambridge Audio devices do you want to configure?"
+        },
+        "field": {
+          "dropdown": {
+            "items": [
+              {
+                "id": "1",
+                "label": {
+                  "en": "Single Device"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "2 Devices"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "3 Devices"
+                }
+              },
+              {
+                "id": "4",
+                "label": {
+                  "en": "4 Devices"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "host",
+        "label": {
+          "en": "IP Address"
+        },
+        "description": {
+          "en": "IP address of your Cambridge Audio device (for single device setup)"
+        },
+        "field": {
+          "text": {
+            "value": "192.168.1.100"
+          }
+        }
+      },
+      {
+        "id": "name",
+        "label": {
+          "en": "Device Name"
+        },
+        "description": {
+          "en": "Friendly name for your device"
+        },
+        "field": {
+          "text": {
+            "value": "Cambridge Audio"
+          }
+        }
+      }
+    ]
+  }
+}
