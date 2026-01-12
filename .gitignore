@@ -86,3 +86,12 @@ Thumbs.db
 
 # Integration specific
 artifacts/
+
+# Claude Code - AI assistant files (local only)
+.claude/
+claude/
+**/claude-chats/
+**/.claude-*
+claude*.json
+claude*.md
+.claude-chat-history

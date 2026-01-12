@@ -11,7 +11,7 @@ from typing import Any, Callable, Optional
 
 import aiohttp
 from aiostreammagic import StreamMagicClient
-from aiostreammagic.models import CallbackType
+from aiostreammagic.models import CallbackType, DisplayBrightness, ControlBusMode
 
 from uc_intg_cambridge_audio.config import DeviceConfig
 
@@ -288,3 +288,53 @@ class CambridgeClient:
             _LOG.error(f"Set repeat failed: {ex}")
             await asyncio.sleep(ERROR_OS_WAIT)
             await self._client.set_repeat(repeat_mode)
+
+    async def set_display_brightness(self, brightness: DisplayBrightness):
+        if not self._client:
+            raise RuntimeError("Client not initialized")
+        try:
+            await self._client.set_display_brightness(brightness)
+        except Exception as ex:
+            _LOG.error(f"Set display brightness failed: {ex}")
+            await asyncio.sleep(ERROR_OS_WAIT)
+            await self._client.set_display_brightness(brightness)
+
+    async def set_audio_output(self, output_id: str):
+        if not self._client:
+            raise RuntimeError("Client not initialized")
+        try:
+            await self._client.set_audio_output(output_id)
+        except Exception as ex:
+            _LOG.error(f"Set audio output failed: {ex}")
+            await asyncio.sleep(ERROR_OS_WAIT)
+            await self._client.set_audio_output(output_id)
+
+    async def set_control_bus_mode(self, mode: ControlBusMode):
+        if not self._client:
+            raise RuntimeError("Client not initialized")
+        try:
+            await self._client.set_control_bus_mode(mode)
+        except Exception as ex:
+            _LOG.error(f"Set control bus mode failed: {ex}")
+            await asyncio.sleep(ERROR_OS_WAIT)
+            await self._client.set_control_bus_mode(mode)
+
+    async def set_pre_amp_mode(self, enabled: bool):
+        if not self._client:
+            raise RuntimeError("Client not initialized")
+        try:
+            await self._client.set_pre_amp_mode(enabled)
+        except Exception as ex:
+            _LOG.error(f"Set pre-amp mode failed: {ex}")
+            await asyncio.sleep(ERROR_OS_WAIT)
+            await self._client.set_pre_amp_mode(enabled)
+
+    async def set_early_update(self, enabled: bool):
+        if not self._client:
+            raise RuntimeError("Client not initialized")
+        try:
+            await self._client.set_early_update(enabled)
+        except Exception as ex:
+            _LOG.error(f"Set early update failed: {ex}")
+            await asyncio.sleep(ERROR_OS_WAIT)
+            await self._client.set_early_update(enabled)

@@ -8,7 +8,7 @@ Cambridge Audio remote entity.
 import logging
 from typing import Any
 
-from aiostreammagic.models import ShuffleMode, RepeatMode as CambridgeRepeatMode
+from aiostreammagic.models import ShuffleMode, RepeatMode as CambridgeRepeatMode, DisplayBrightness, ControlBusMode
 from ucapi import StatusCodes, Remote
 from ucapi.remote import Attributes, Commands, Features, States
 from ucapi.ui import create_btn_mapping, Buttons, create_ui_icon, UiPage, Size
@@ -42,7 +42,15 @@ class CambridgeRemote(Remote):
             "VOLUME_DOWN",
             "MUTE",
             "UNMUTE",
-            "MUTE_TOGGLE"
+            "MUTE_TOGGLE",
+            "DISPLAY_BRIGHT",
+            "DISPLAY_DIM",
+            "DISPLAY_OFF",
+            "PREAMP_ON",
+            "PREAMP_OFF",
+            "CONTROL_BUS_AMPLIFIER",
+            "CONTROL_BUS_RECEIVER",
+            "CONTROL_BUS_OFF"
         ]
         
         sources = []
@@ -77,7 +85,7 @@ class CambridgeRemote(Remote):
         main_page.add(create_ui_icon("uc:next", 3, 2, cmd="NEXT"))
         
         ui_pages = [main_page]
-        
+
         if sources:
             sources_page = UiPage("sources", "Sources")
             row = 0
@@ -89,6 +97,20 @@ class CambridgeRemote(Remote):
                     col = 0
                     row += 1
             ui_pages.append(sources_page)
+
+        settings_page = UiPage("settings", "Settings")
+        settings_page.add(create_ui_icon("uc:brightness-high", 0, 0, cmd="DISPLAY_BRIGHT"))
+        settings_page.add(create_ui_icon("uc:brightness-medium", 1, 0, cmd="DISPLAY_DIM"))
+        settings_page.add(create_ui_icon("uc:brightness-off", 2, 0, cmd="DISPLAY_OFF"))
+
+        settings_page.add(create_ui_icon("uc:pre-amplifier", 0, 1, cmd="PREAMP_ON"))
+        settings_page.add(create_ui_icon("uc:amplifier-off", 1, 1, cmd="PREAMP_OFF"))
+
+        settings_page.add(create_ui_icon("uc:amplifier", 0, 2, cmd="CONTROL_BUS_AMPLIFIER"))
+        settings_page.add(create_ui_icon("uc:receiver", 1, 2, cmd="CONTROL_BUS_RECEIVER"))
+        settings_page.add(create_ui_icon("uc:control-off", 2, 2, cmd="CONTROL_BUS_OFF"))
+
+        ui_pages.append(settings_page)
         
         attributes = {
             Attributes.STATE: States.UNAVAILABLE
@@ -233,6 +255,30 @@ class CambridgeRemote(Remote):
                 if src.id.upper() == source_id:
                     await self._client.set_source_by_id(src.id)
                     break
-        
+
+        elif command_upper == "DISPLAY_BRIGHT":
+            await self._client.set_display_brightness(DisplayBrightness.BRIGHT)
+
+        elif command_upper == "DISPLAY_DIM":
+            await self._client.set_display_brightness(DisplayBrightness.DIM)
+
+        elif command_upper == "DISPLAY_OFF":
+            await self._client.set_display_brightness(DisplayBrightness.OFF)
+
+        elif command_upper == "PREAMP_ON":
+            await self._client.set_pre_amp_mode(True)
+
+        elif command_upper == "PREAMP_OFF":
+            await self._client.set_pre_amp_mode(False)
+
+        elif command_upper == "CONTROL_BUS_AMPLIFIER":
+            await self._client.set_control_bus_mode(ControlBusMode.AMPLIFIER)
+
+        elif command_upper == "CONTROL_BUS_RECEIVER":
+            await self._client.set_control_bus_mode(ControlBusMode.RECEIVER)
+
+        elif command_upper == "CONTROL_BUS_OFF":
+            await self._client.set_control_bus_mode(ControlBusMode.OFF)
+
         else:
             _LOG.warning(f"Unknown simple command: {command}")
