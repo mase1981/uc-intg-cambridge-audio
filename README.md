@@ -19,7 +19,7 @@ Control your Cambridge Audio streamers, receivers, and pre-amps (Evo, CXN, CXR, 
 This integration provides comprehensive control of Cambridge Audio network streamers through the StreamMagic WebSocket API, delivering seamless integration with your Unfolded Circle Remote for complete music streaming control.
 
 ---
-## 💰 Support Development
+## ❤️ Support Development ❤️
 
 If you find this integration useful, consider supporting development:
 
@@ -150,6 +150,8 @@ services:
     environment:
       - UC_CONFIG_HOME=/data
       - UC_INTEGRATION_HTTP_PORT=9090
+      - UC_INTEGRATION_INTERFACE=0.0.0.0
+      - PYTHONPATH=/app
     restart: unless-stopped
 ```
 
@@ -188,7 +190,7 @@ docker run -d --name uc-cambridge-audio --restart unless-stopped --network host 
    - **IP Address**: Enter device IP (e.g., 192.168.1.100)
    - **Device Name**: Friendly name (e.g., "Living Room Cambridge")
    - Click **Complete Setup**
-   
+
    **Connection Test:**
    - Integration verifies device connectivity via WebSocket
    - Model information retrieved automatically
@@ -202,7 +204,7 @@ docker run -d --name uc-cambridge-audio --restart unless-stopped --network host 
      - IP address
      - Friendly name
    - Click **Complete Setup**
-   
+
    **Connection Test:**
    - Integration tests all connections simultaneously
    - Only successfully connected devices added
@@ -234,181 +236,10 @@ Each device's remote entity provides:
 
 - **Physical Button Mappings**: Pre-configured for optimal control
 - **Simple Commands**: All commands available for activities
-- **Custom UI Pages**: 
+- **Custom UI Pages**:
   - Main control page with power, volume, playback
   - Sources page with grid layout for quick selection
 - **Activity Integration**: Commands can be used in UC activities
-
-### Available Sources
-
-Sources are dynamically discovered from your device configuration:
-
-| Source Category | Examples |
-|----------------|----------|
-| Streaming Services | Spotify, Tidal, Qobuz |
-| Digital Inputs | Optical, Coaxial |
-| Analog Input | Stereo analog |
-| USB | USB audio input |
-| Network | DLNA, UPnP servers |
-| Internet Radio | Built-in radio stations |
-| AirPlay | Apple AirPlay |
-| Bluetooth | Bluetooth audio |
-
-**Note**: Only sources configured and available on your device will appear in the source list.
-
-### Activity Integration
-
-#### Creating Activities
-
-Remote commands can be integrated into UC activities:
-
-```yaml
-Power On Sequence:
-  1. POWER_ON
-  2. Delay 2000ms
-  3. SOURCE_SPOTIFY
-  4. Delay 1000ms
-  5. PLAY
-
-Volume Control:
-  - VOLUME_UP (repeatable)
-  - VOLUME_DOWN (repeatable)
-  - MUTE_TOGGLE
-
-Source Selection:
-  - SOURCE_SPOTIFY
-  - SOURCE_TIDAL
-  - SOURCE_USB
-  - SOURCE_OPTICAL
-  (dynamically generated from device sources)
-```
-
-## Troubleshooting
-
-### Connection Issues
-
-**Problem**: Integration cannot connect to device
-- **Solution**: Verify device IP address is correct
-- **Solution**: Ensure device is powered on and connected to network
-- **Solution**: Check that device and Remote are on same subnet
-- **Solution**: Restart device and try again
-- **Solution**: Verify no firewall blocking port 80
-
-**Problem**: Device disconnects frequently
-- **Solution**: Use wired Ethernet connection instead of Wi-Fi
-- **Solution**: Assign static IP or DHCP reservation
-- **Solution**: Update device firmware to latest version
-- **Solution**: Check network stability and router logs
-
-### Control Issues
-
-**Problem**: Commands not responding
-- **Solution**: Check device state in web interface
-- **Solution**: Verify WebSocket connection is active
-- **Solution**: Enable "Keep WiFi connected in standby" in Remote settings
-- **Solution**: Restart integration from web interface
-
-**Problem**: Volume control not working
-- **Solution**: Verify device is in correct mode (not in standby)
-- **Solution**: Check if device supports volume control (some models are fixed output)
-- **Solution**: Ensure pre-amp mode is enabled if available
-
-**Problem**: Sources not appearing
-- **Solution**: Configure sources in Cambridge Audio app first
-- **Solution**: Restart integration to refresh source list
-- **Solution**: Verify sources are enabled on device
-
-### Reboot Survival
-
-**Problem**: Entities unavailable after Remote reboot
-- **Check**: This integration includes automatic reboot survival
-- **Solution**: If entities still unavailable, remove and re-add integration
-- **Prevention**: Always use latest version from releases
-
-### Wake-Up Issues
-
-**Problem**: Commands fail immediately after Remote wakes from sleep
-- **Solution**: Enable "Keep WiFi connected in standby" in Remote power settings
-- **Note**: Integration includes automatic retry logic for wake-up scenarios
-
-### Getting Help
-
-1. **Check Logs**: Enable debug logging in Remote web interface
-2. **GitHub Issues**: [Report bugs and request features](https://github.com/mase1981/uc-intg-cambridge-audio/issues)
-3. **Community Forum**: [Get help from community](https://community.unfoldedcircle.com/)
-4. **Discord**: [Join real-time discussion](https://discord.gg/zGVYf58)
-
-## Development
-
-### Running Locally
-
-```bash
-# Clone repository
-git clone https://github.com/mase1981/uc-intg-cambridge-audio.git
-cd uc-intg-cambridge-audio
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run integration
-python -m uc_intg_cambridge_audio.driver
-```
-
-### Using the Simulator
-
-For development without physical hardware:
-
-```bash
-# Start simulator (separate terminal)
-python cambridge_audio_simulator.py
-
-# Start integration (another terminal)
-python -m uc_intg_cambridge_audio.driver
-
-# Use localhost or 127.0.0.1 as device IP during setup
-```
-
-**Simulator Features:**
-- Emulates Cambridge Audio CXN V2 with StreamMagic API
-- Responds to all standard commands
-- Realistic power, playback, volume, mute control
-- Dynamic source management
-- WebSocket connection handling
-- State update broadcasting
-
-### Project Structure
-
-```
-uc-intg-cambridge-audio/
-├── uc_intg_cambridge_audio/   # Main package
-│   ├── __init__.py            # Package info with dynamic versioning
-│   ├── client.py              # StreamMagic WebSocket client
-│   ├── config.py              # Configuration management
-│   ├── driver.py              # Main integration driver
-│   ├── media_player.py        # Media player entity
-│   ├── remote.py              # Remote control entity
-│   └── setup.py               # Setup flow handler
-├── .github/workflows/         # GitHub Actions CI/CD
-│   └── build.yml              # Automated build pipeline
-├── .vscode/                   # VS Code configuration
-│   └── launch.json            # Debug configuration
-├── cambridge_audio_simulator.py  # Development simulator
-├── docker-compose.yml         # Docker deployment
-├── Dockerfile                 # Container build instructions
-├── driver.json                # Integration metadata
-├── requirements.txt           # Dependencies
-├── pyproject.toml             # Python project config
-└── README.md                  # This file
-```
-
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes and test with real Cambridge device or simulator
-4. Commit changes: `git commit -m 'Add amazing feature'`
-5. Push to branch: `git push origin feature/amazing-feature`
-6. Open a Pull Request
 
 ## Credits
 
@@ -426,12 +257,12 @@ This project is licensed under the Mozilla Public License 2.0 (MPL-2.0) - see LI
 ## Support & Community
 
 - **GitHub Issues**: [Report bugs and request features](https://github.com/mase1981/uc-intg-cambridge-audio/issues)
-- **UC Community Forum**: [General discussion and support](https://unfolded.community/)
+- **UC Community Forum**: [General discussion and support](https://community.unfoldedcircle.com/)
 - **Developer**: [Meir Miyara](https://www.linkedin.com/in/meirmiyara)
 - **Cambridge Audio Support**: [Official Cambridge Audio Support](https://www.cambridgeaudio.com/row/en/support)
 
 ---
 
-**Made with ❤️ for the Unfolded Circle and Cambridge Audio Communities** 
+**Made with ❤️ for the Unfolded Circle and Cambridge Audio Communities**
 
 **Thank You**: Meir Miyara
