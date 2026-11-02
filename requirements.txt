@@ -1,4 +1,4 @@
-ucapi==0.5.1
-aiostreammagic>=2.8.0
-certifi
+ucapi-framework>=1.9.8
+ucapi>=0.7.0
+aiostreammagic>=2.13.2
 aiohttp>=3.9.0

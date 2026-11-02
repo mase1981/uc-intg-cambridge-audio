@@ -30,83 +30,31 @@ If you find this integration useful, consider supporting development:
 Your support helps maintain this integration. Thank you! ❤️
 ---
 
-### 🎵 **Media Player Control**
+### 🎵 **Media Player**
 
-#### **Power Management**
-- **Power On/Off** - Complete power control
-- **Power Toggle** - Quick power state switching
-- **State Feedback** - Real-time power state monitoring
-- **Standby Mode** - Network standby support
+Power, volume (slider, up/down, mute), playback (play/pause, stop, next, previous, seek), shuffle, repeat (off / all / one), dynamic source list, and now-playing info with artwork, duration and position.
 
-#### **Playback Control**
-- **Play/Pause** - Playback control with state feedback
-- **Stop** - Stop playback
-- **Next Track** - Skip to next track
-- **Previous Track** - Skip to previous track
-- **Seek** - Position control within current media
-- **Shuffle Control** - Toggle shuffle mode
-- **Repeat Control** - Toggle repeat mode
+### 🎮 **Remote Entity**
 
-#### **Volume Control**
-- **Volume Up/Down** - Precise volume adjustment
-- **Set Volume** - Direct volume control (0-100 scale)
-- **Volume Slider** - Visual volume control
-- **Mute Toggle** - Quick mute/unmute
-- **Mute/Unmute** - Explicit mute control
-- **Pre-Amp Mode** - Full volume control in pre-amp mode
+Physical button mapping, simple commands for activities (`send_cmd` and `send_cmd_sequence`), and UI pages for main controls, sources and settings. Commands include `POWER_ON`, `POWER_OFF`, `SOURCE_<id>`, display brightness, pre-amp and control bus modes.
 
-#### **Source Selection**
-Control all available input sources dynamically:
-- **Spotify** - Spotify Connect streaming
-- **Tidal** - Tidal HiFi streaming
-- **USB** - USB audio input
-- **Optical** - Optical digital input
-- **Coaxial** - Coaxial digital input
-- **Analog** - Analog audio input
-- **Internet Radio** - Built-in radio stations
-- **AirPlay** - Apple AirPlay support
-- **Bluetooth** - Bluetooth audio streaming
-- **Network Sources** - Network streaming services
+### 📊 **Sensors**
 
-#### **Media Information**
-- **Now Playing** - Current track title, artist, album
-- **Album Art** - High-resolution cover art display
-- **Media Duration** - Total track length
-- **Media Position** - Current playback position with live updates
-- **Media Type** - Content type identification
-- **Station Info** - Internet radio station details
+State, source, volume (% and dB), audio output, model, API version, firmware update status, pre-amp mode, control bus, standby mode, auto power-down, display brightness, equalizer and EQ preset, room correction (and intensity), balance, volume limit, digital filter, audio pipeline, phase invert, plus stream details: codec, sample rate, sample format, bitrate, lossless, MQA, signal and radio station.
+
+Sensors for features your unit does not have (for example equalizer or room correction) are not created.
+
+### 🎛️ **Selects**
+
+Source, audio output, display brightness, control bus mode, standby mode, EQ preset and preset recall.
+
+### 🔘 **Switches**
+
+Pre-amp mode, equalizer, room correction and early firmware updates.
 
 ### 🔌 **Multi-Device Support**
 
-- **Multiple Streamers** - Control up to 4 Cambridge Audio devices
-- **Individual Configuration** - Each device gets dedicated media player and remote entities
-- **Manual Configuration** - Direct IP address entry
-- **Model Detection** - Automatic model identification
-- **Custom Naming** - Personalized device names
-
-### 🎮 **Remote Control Entity**
-
-Each device includes a comprehensive remote control entity with:
-
-#### **Simple Commands**
-- Power control (ON, OFF, TOGGLE)
-- Transport controls (PLAY, PAUSE, STOP, NEXT, PREVIOUS)
-- Volume controls (UP, DOWN, MUTE)
-- Source selection commands
-- All commands available for activity integration
-
-#### **Physical Button Mapping**
-- Power button → Power toggle
-- Volume buttons → Volume control
-- Mute button → Mute toggle
-- Play button → Play/Pause
-- Next/Previous buttons → Track navigation
-
-#### **Custom UI Pages**
-- **Main Page**: Power, volume, playback controls
-- **Sources Page**: Quick source selection grid
-- Beautiful icon-based interface
-- Optimized for Remote 2/3 display
+Run setup again to add another device. Each device gets its own full set of entities.
 
 ### **Protocol Requirements**
 
@@ -121,7 +69,7 @@ Each device includes a comprehensive remote control entity with:
 - **Local Network Access** - Integration requires same network as Cambridge Audio device
 - **WebSocket Support** - Device must support StreamMagic WebSocket API
 - **Static IP Recommended** - Device should have static IP or DHCP reservation
-- **Network Discovery** - Devices must be accessible via IP address
+- **Standby** - Keep the unit in Network standby mode; in Eco standby the unit is unreachable until powered on at the unit
 
 ## Installation
 
@@ -182,37 +130,12 @@ docker run -d --name uc-cambridge-audio --restart unless-stopped --network host 
 
 1. After installation, go to **Settings** → **Integrations**
 2. The Cambridge Audio integration should appear in **Available Integrations**
-3. Click **"Configure"** and select setup mode:
+3. Click **"Configure"** and enter:
+   - **Device Name**: Friendly name (optional, defaults to the name set on the device)
+   - **IP Address**: Device IP (e.g., 192.168.1.100)
+4. The integration connects to the device, reads its model, sources and capabilities, and creates the entities.
 
-#### **Single Device Setup:**
-
-   **Configuration:**
-   - **IP Address**: Enter device IP (e.g., 192.168.1.100)
-   - **Device Name**: Friendly name (e.g., "Living Room Cambridge")
-   - Click **Complete Setup**
-
-   **Connection Test:**
-   - Integration verifies device connectivity via WebSocket
-   - Model information retrieved automatically
-   - Setup fails if device unreachable
-
-#### **Multi-Device Setup:**
-
-   **Configuration:**
-   - Select number of devices (2-4)
-   - For each device, provide:
-     - IP address
-     - Friendly name
-   - Click **Complete Setup**
-
-   **Connection Test:**
-   - Integration tests all connections simultaneously
-   - Only successfully connected devices added
-   - Failed connections reported with error details
-
-3. Integration will create **two entities per device**:
-   - **Media Player**: `media_player.cambridge_[device_name]`
-   - **Remote Control**: `remote.cambridge_[device_name]`
+To add another device, run setup again. Existing entity IDs are preserved when upgrading from 1.x.
 
 ## Using the Integration
 
@@ -239,6 +162,7 @@ Each device's remote entity provides:
 - **Custom UI Pages**:
   - Main control page with power, volume, playback
   - Sources page with grid layout for quick selection
+  - Settings page for display brightness, pre-amp and control bus
 - **Activity Integration**: Commands can be used in UC activities
 
 ## Credits
@@ -248,6 +172,7 @@ Each device's remote entity provides:
 - **Unfolded Circle**: Remote 2/3 integration framework (ucapi)
 - **StreamMagic API**: Cambridge Audio's WebSocket control protocol
 - **aiostreammagic**: Python library by Noah Husby
+- **ucapi-framework**: Framework by Jack Powell
 - **Community**: Testing and feedback from UC community
 
 ## License
