@@ -1,43 +1,38 @@
 [build-system]
-requires = ["setuptools>=65.0.0", "wheel"]
+requires = ["setuptools>=65.0", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "uc-intg-cambridge-audio"
-dynamic = ["version"]
 description = "Cambridge Audio integration for Unfolded Circle Remote"
-authors = [
-    {name = "Meir Miyara", email = "meir.miyara@gmail.com"}
-]
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MPL-2.0"}
+authors = [{name = "Meir Miyara", email = "meir.miyara@gmail.com"}]
+keywords = ["unfoldedcircle", "integration", "cambridge-audio", "streammagic"]
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL-2.0)",
-    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
     "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "Topic :: Home Automation",
-    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "ucapi>=0.3.0",
-    "aiostreammagic>=2.8.0",
+    "ucapi-framework>=1.9.8",
+    "ucapi>=0.7.0",
+    "aiostreammagic>=2.13.2",
+    "aiohttp>=3.9.0",
 ]
+dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/mase1981/uc-intg-cambridge-audio"
-Issues = "https://github.com/mase1981/uc-intg-cambridge-audio/issues"
+"Homepage" = "https://github.com/mase1981/uc-intg-cambridge-audio"
+"Bug Reports" = "https://github.com/mase1981/uc-intg-cambridge-audio/issues"
+
+[tool.setuptools]
+packages = ["uc_intg_cambridge_audio"]
 
 [tool.setuptools.dynamic]
 version = {attr = "uc_intg_cambridge_audio.__version__"}
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["uc_intg_cambridge_audio*"]
-exclude = ["tests*"]
-
 [project.scripts]
-uc-intg-cambridge-audio = "uc_intg_cambridge_audio.driver:main"
+uc-intg-cambridge-audio = "uc_intg_cambridge_audio:main"

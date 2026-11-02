@@ -55,7 +55,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-/tools
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -95,3 +94,15 @@ claude/
 claude*.json
 claude*.md
 .claude-chat-history
+
+# Testing files (local only, never push)
+tests/
+simulator/
+
+# Editor
+.vscode/
+
+# Claude knowledge base (local only)
+knowledge-base/
+*.knowledge.md
+pytest.ini
